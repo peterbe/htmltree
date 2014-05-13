@@ -1,0 +1,94 @@
+<!doctype html>
+<html ng-app="htmltree">
+<head>
+<meta charset="utf-8">
+<title>HTML Tree</title>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Open+Sans:300italic,400,300,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="/static/css/semantic.min.css">
+<link rel="stylesheet" href="/static/css/semantic.css">
+<link rel="stylesheet" href="/static/css/tree.css">
+<link rel="stylesheet" href="/static/css/treemap.css">
+<link rel="stylesheet" href="/static/css/balls.css">
+
+</head>
+<body class="guide" id="example" ng-controller="AppController">
+
+  <div class="ui fixed transparent inverted main menu">
+    <div class="container">
+      <a class="launch item"><i class="icon list layout"></i> Content</a>
+      <div class="title item">
+        <a href="/"><b>HTML Tree</b></a>
+        <!-- <i>To find out which DOM nodes weigh the most</i> -->
+      </div>
+
+
+
+      <div class="right menu">
+        <a class="popup icon github item" data-content="View project on Github" href="https://github.com/peterbe/htmltree">
+          <i class="icon github"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="segment">
+    <div class="container">
+
+        <form ng-submit="submitForm()">
+            <div class="ui fluid form">
+              <div class="field">
+                <label>URL</label>
+                <div class="ui left input">
+                  <input name="url" ng-model="url" placeholder="http://..." type="text" style="font-size:150%">
+                </div>
+              </div>
+            </div>
+
+        </form>
+
+
+    </div>
+  </div>
+
+<div class="container main" style="width:{{ page_width }}px">
+
+    <h4 ng-show="loading" style="text-align:center">Turning your URL into a tree...</h4>
+
+    <div id="balls" ng-show="loading">
+      <div class='wrap' id='wrap1'>
+        <div class='ball' id='ball1'></div>
+      </div>
+
+      <div class='wrap' id='wrap2'>
+        <div class='ball' id='ball2'></div>
+      </div>
+
+      <div class='wrap' id='wrap3'>
+        <div class='ball' id='ball3'></div>
+      </div>
+
+      <div class='wrap' id='wrap4'>
+        <div class='ball' id='ball4'></div>
+      </div>
+
+    </div>
+
+    <div id="tree"></div>
+    <!-- <div id="treemap"></div> -->
+
+</div>
+
+<!-- build:js /static/vendor-$hash.min.js -->
+<script src="/static/js/vendor/1.2.14/angular.min.js"></script>
+<script src="/static/js/vendor/1.2.14/angular-route.min.js"></script>
+<script src="/static/js/vendor/angular-classy.min.js"></script>
+<script src="/static/js/vendor/d3.v3.min.js"></script>
+<!-- endbuild -->
+
+<!-- build:js /static/bundle-$hash.min.js -->
+<script src="/static/js/tree.js"></script>
+<script src="/static/js/app.js"></script>
+<!-- endbuild -->
+
+</body>
+</html>

@@ -1,0 +1,4 @@
+Flask
+grymt
+python-memcached
+requests
