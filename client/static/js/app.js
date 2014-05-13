@@ -24,6 +24,13 @@ angular.module('htmltree', [
             this._drawTree(this.$location.search().url);
         }
 
+        this.$.recent = [];
+        this.$http.get('/tree')
+        .success(function(r) {
+            if (r.recent) {
+                this.$.recent = r.recent;
+            }
+        }.bind(this));
         // this.$.jobs_in_queue = 0;
         // this.$interval(function() {
         //     this.$http.get('/tree')

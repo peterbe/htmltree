@@ -34,7 +34,9 @@ class URLToTreeView(MethodView):
 
     def get(self):
         value = cache.get(self.queue_key) or 0
-        return make_response(jsonify({'jobs': value}))
+        recent = cache.get('recent') or []
+        context = {'jobs': value, 'recent': recent}
+        return make_response(jsonify(context))
 
     def post(self):
         url = request.json['url']
@@ -48,6 +50,11 @@ class URLToTreeView(MethodView):
         key = hashlib.md5('%s%s' % (url, max_depth)).hexdigest()
         tree = cache.get(key)
         if tree is None:
+
+            recent = cache.get('recent') or []
+            recent.insert(0, url)
+            cache.set('recent', recent[:10], 60 * 60 * 24)
+
             cache.inc(self.queue_key, 1)
             tree = url_to_tree(
                 url,

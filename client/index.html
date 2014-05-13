@@ -59,11 +59,20 @@ https://github.com/peterbe/htmltree/compare/$git_revision_short...HEAD
 
         </form>
 
-        <p ng-show="!url.length">
+        <p ng-show="!url.length" style="margin-top:40px">
             <b>Tip!</b>
             Type in a URL in the box above and hit Enter.
 	    <a href="?url=www.peterbe.com" ng-click="sampleSubmission('www.peterbe.com')">For example</a>
         </p>
+
+        <div ng-show="!url.length && recent.length" style="margin-top:40px">
+            <p><b>Other recent submissions</b></p>
+            <ul>
+                <li ng-repeat="url_ in recent">
+                    <a href="?url={{ url_ }}" ng-click="sampleSubmission(url_)">{{ url_ }}</a>
+                </li>
+            </ul>
+        </div>
 
 
     </div>
