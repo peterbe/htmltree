@@ -37,6 +37,8 @@ angular.module('htmltree', [
         if (this.$.url.trim()) {
             this.$location.search('url', this.$.url.trim());
             this._drawTree(this.$.url.trim());
+        } else {
+            d3.select('#tree svg').remove();
         }
     },
 
@@ -65,6 +67,11 @@ angular.module('htmltree', [
             this.$.loading = false;
         }.bind(this));
     },
+
+    sampleSubmission: function(url) {
+        this.$.url = url;
+        this._drawTree(this.$.url.trim());
+    }
 
 })
 
