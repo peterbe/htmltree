@@ -1,3 +1,4 @@
 .downloadcache/
 client/flare.json
 *.pyc
+dist/
