@@ -30,6 +30,12 @@ cache = MemcachedCache(MEMCACHE_URL)
 
 class URLToTreeView(MethodView):
 
+    queue_key = 'jobs-in-queue'
+
+    def get(self):
+        value = cache.get(self.queue_key) or 0
+        return make_response(jsonify({'jobs': value}))
+
     def post(self):
         url = request.json['url']
         max_depth = int(request.json['max_depth'])
@@ -39,13 +45,20 @@ class URLToTreeView(MethodView):
         # from time import sleep
         # sleep(6)
         assert max_depth <= 5
-        key = hashlib.md5(url).hexdigest()
-        tree = url_to_tree(
-            url,
-            use_cache=DEBUG,
-            max_depth=max_depth
-        )
-        cache.set(key, tree, 60 * 60)
+        key = hashlib.md5('%s%s' % (url, max_depth)).hexdigest()
+        tree = cache.get(key)
+        if tree is None:
+            cache.inc(self.queue_key, 1)
+            tree = url_to_tree(
+                url,
+                use_cache=DEBUG,
+                max_depth=max_depth
+            )
+            cache.dec(self.queue_key, 1)
+            cache.set(key, tree, 60 * 60)
+            tree['_from_cache'] = False
+        else:
+            tree['_from_cache'] = True
         # tree = cache.get(key)
         return make_response(jsonify(tree))
 

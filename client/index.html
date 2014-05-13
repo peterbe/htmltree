@@ -1,21 +1,32 @@
 <!doctype html>
 <html ng-app="htmltree">
+<!--!
+
+Source code for this page is on https://github.com/peterbe/htmltree
+
+version: $git_revision_short
+https://github.com/peterbe/htmltree/compare/$git_revision_short...HEAD
+-->
 <head>
 <meta charset="utf-8">
 <title>HTML Tree</title>
 <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Open+Sans:300italic,400,300,700' rel='stylesheet' type='text/css'>
+
+<!-- build:css /static/style-$hash.min.css -->
 <link rel="stylesheet" href="/static/css/semantic.min.css">
 <link rel="stylesheet" href="/static/css/semantic.css">
 <link rel="stylesheet" href="/static/css/tree.css">
-<link rel="stylesheet" href="/static/css/treemap.css">
+<!-- <link rel="stylesheet" href="/static/css/treemap.css"> -->
 <link rel="stylesheet" href="/static/css/balls.css">
+<link rel="stylesheet" href="/static/css/extra.css">
+<!-- endbuild -->
 
 </head>
 <body class="guide" id="example" ng-controller="AppController">
 
   <div class="ui fixed transparent inverted main menu">
     <div class="container">
-      <a class="launch item"><i class="icon list layout"></i> Content</a>
+      <a class="launch item">HTML Tree</a>
       <div class="title item">
         <a href="/"><b>HTML Tree</b></a>
         <!-- <i>To find out which DOM nodes weigh the most</i> -->
@@ -37,7 +48,7 @@
         <form ng-submit="submitForm()">
             <div class="ui fluid form">
               <div class="field">
-                <label>URL</label>
+                <!-- <label>URL</label> -->
                 <div class="ui left input">
                   <input name="url" ng-model="url" placeholder="http://..." type="text" style="font-size:150%">
                 </div>
@@ -46,11 +57,25 @@
 
         </form>
 
+        <p ng-show="!url.length">
+            <b>Tip!</b>
+            Type in a URL in the box above and hit Enter.
+        </p>
+
 
     </div>
   </div>
 
 <div class="container main" style="width:{{ page_width }}px">
+
+    <div id="server-error" ng-show="server_error">
+        <h4>Oh nasty server error!</h4>
+        <p ng-if="url">
+            It appears something went horribly wrong trying to analyze
+            <code>{{ url }}</code>.
+        </p>
+        <p><a href="/" ng-click="server_error=false;url=''">Clear</a></p>
+    </div>
 
     <h4 ng-show="loading" style="text-align:center">Turning your URL into a tree...</h4>
 
@@ -77,6 +102,10 @@
     <!-- <div id="treemap"></div> -->
 
 </div>
+
+<!-- <div id="jobs-in-queue">
+    <p>Jobs in queue: {{ jobs_in_queue }}</p>
+</div> -->
 
 <!-- build:js /static/vendor-$hash.min.js -->
 <script src="/static/js/vendor/1.2.14/angular.min.js"></script>

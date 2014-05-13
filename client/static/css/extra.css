@@ -1,0 +1,22 @@
+#jobs-in-queue {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 85px;
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    font-size: 70%;
+    text-align: right;
+    padding: 3px;
+    border-top-left-radius: 4px;
+}
+
+#server-error {
+    border: 1px solid #EBCCD1;
+    background-color: #F2DEDE;
+    color: #A94442;
+    margin: 0 auto;
+    width: 50%;
+    padding: 10px 60px;
+    margin-top: 30px;
+}
