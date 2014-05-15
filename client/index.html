@@ -30,7 +30,7 @@ https://github.com/peterbe/htmltree/compare/$git_revision_short...HEAD
     <div class="container">
       <a class="launch item">HTML Tree</a>
       <div class="title item">
-        <a href="/"><b>HTML Tree</b></a>
+        <a href="/" ng-click="reset()"><b>HTML Tree</b></a>
         <!-- <i>To find out which DOM nodes weigh the most</i> -->
       </div>
 
@@ -44,7 +44,7 @@ https://github.com/peterbe/htmltree/compare/$git_revision_short...HEAD
     </div>
   </div>
 
-  <div class="segment">
+  <div class="segment" ng-class="{bigger: !drawn}">
     <div class="container">
 
         <form ng-submit="submitForm()">
@@ -59,13 +59,13 @@ https://github.com/peterbe/htmltree/compare/$git_revision_short...HEAD
 
         </form>
 
-        <p ng-show="!url.length" style="margin-top:40px">
+        <p ng-show="!url.length" style="margin-top:40px" ng-cloak>
             <b>Tip!</b>
             Type in a URL in the box above and hit Enter.
 	    <a href="?url=www.peterbe.com" ng-click="sampleSubmission('www.peterbe.com')">For example</a>
         </p>
 
-        <div ng-show="!url.length && recent.length" style="margin-top:40px">
+        <div ng-show="!url.length && recent.length" style="margin-top:40px" ng-cloak>
             <p><b>Other recent submissions</b></p>
             <ul>
                 <li ng-repeat="url_ in recent">
@@ -80,18 +80,18 @@ https://github.com/peterbe/htmltree/compare/$git_revision_short...HEAD
 
 <div class="container main" style="width:{{ page_width }}px">
 
-    <div id="server-error" ng-show="server_error">
+    <div id="server-error" ng-show="server_error" ng-cloak>
         <h4>Oh nasty server error!</h4>
         <p ng-if="url">
             It appears something went horribly wrong trying to analyze
             <code>{{ url }}</code>.
         </p>
-        <p><a href="/" ng-click="server_error=false;url=''">Clear</a></p>
+        <p><a href="/" ng-click="reset()">Clear</a></p>
     </div>
 
-    <h4 ng-show="loading" style="text-align:center">Turning your URL into a tree...</h4>
+    <h4 ng-show="loading" style="text-align:center" ng-cloak>Turning your URL into a tree...</h4>
 
-    <div id="balls" ng-show="loading">
+    <div id="balls" ng-show="loading" ng-cloak>
       <div class='wrap' id='wrap1'>
         <div class='ball' id='ball1'></div>
       </div>

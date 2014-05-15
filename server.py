@@ -35,6 +35,7 @@ class URLToTreeView(MethodView):
     def get(self):
         value = cache.get(self.queue_key) or 0
         recent = cache.get('recent') or []
+        recent = _unique(recent)
         context = {'jobs': value, 'recent': recent}
         return make_response(jsonify(context))
 
@@ -51,10 +52,6 @@ class URLToTreeView(MethodView):
         tree = cache.get(key)
         if tree is None:
 
-            recent = cache.get('recent') or []
-            recent.insert(0, url)
-            cache.set('recent', recent[:10], 60 * 60 * 24)
-
             cache.inc(self.queue_key, 1)
             tree = url_to_tree(
                 url,
@@ -64,10 +61,27 @@ class URLToTreeView(MethodView):
             cache.dec(self.queue_key, 1)
             cache.set(key, tree, 60 * 60)
             tree['_from_cache'] = False
+
+            recent = cache.get('recent') or []
+            recent.insert(0, url)
+            recent = _unique(recent)
+            cache.set('recent', recent[:10], 60 * 60 * 24)
+
         else:
             tree['_from_cache'] = True
         # tree = cache.get(key)
         return make_response(jsonify(tree))
+
+
+def _unique(list_):
+    def _f10(seq, idfun=None):
+        seen = set()
+        for x in seq:
+            if x in seen:
+                continue
+            seen.add(x)
+            yield x
+    return list(_f10(list_))
 
 
 @app.route('/')

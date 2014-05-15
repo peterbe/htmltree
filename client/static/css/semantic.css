@@ -160,8 +160,8 @@ a:hover {
 #example > .content > .page > .segment,
 #example > .segment {
   /*margin: 0px 0px 3em;*/
-  padding-top: 70px;
-  padding-bottom: 30px;
+  padding-top: 60px;
+  padding-bottom: 5px;
   background-color: #FFFFFF;
   border-bottom: 1px solid #DDDDDD;
 }

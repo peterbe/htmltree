@@ -15,6 +15,7 @@ angular.module('htmltree', [
         // makeTree('flare.json', '#tree');
         // this.$.url='http://www.peterbe.com';
         this.$.url = '';
+        this.$.drawn = false;
         this.$.max_depth = 5;
         this.$.loading = false;
         this.$.page_width = 960;
@@ -38,6 +39,14 @@ angular.module('htmltree', [
         //         this.$.jobs_in_queue = r.jobs;
         //     }.bind(this));
         // }.bind(this), 1000);
+    },
+
+    reset: function() {
+        this.$.url = '';
+        this.$.drawn = false;
+        this.$.server_error = false;
+        this.$.page_width = 960;
+        d3.select('#tree svg').remove();
     },
 
     submitForm: function() {
@@ -71,6 +80,7 @@ angular.module('htmltree', [
             console.error('Status', status);
         }.bind(this))
         .finally(function() {
+            this.$.drawn = true;
             this.$.loading = false;
         }.bind(this));
     },
