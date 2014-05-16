@@ -59,7 +59,7 @@ class URLToTreeView(MethodView):
             recent = cache.get('recent') or []
             recent.insert(0, url)
             recent = _unique(recent)
-            cache.set('recent', recent[:10], 60 * 60 * 24)
+            cache.set('recent', recent[:15], 60 * 60 * 24)
 
         else:
             tree['_from_cache'] = True
