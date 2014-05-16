@@ -1,9 +1,6 @@
 #!/usr/bin/env python
-import json
 import os
 import hashlib
-
-import requests
 
 from werkzeug.contrib.cache import MemcachedCache
 
@@ -42,11 +39,8 @@ class URLToTreeView(MethodView):
     def post(self):
         url = request.json['url']
         max_depth = int(request.json['max_depth'])
-        # treemap = bool(request.json.get('treemap'))
         if '://' not in url:
             url = 'http://' + url
-        # from time import sleep
-        # sleep(6)
         assert max_depth <= 5
         key = hashlib.md5('%s%s' % (url, max_depth)).hexdigest()
         tree = cache.get(key)
@@ -69,7 +63,6 @@ class URLToTreeView(MethodView):
 
         else:
             tree['_from_cache'] = True
-        # tree = cache.get(key)
         return make_response(jsonify(tree))
 
 
@@ -95,7 +88,6 @@ def catch_all(path):
         path = 'static/favicon.ico'
     path = path or 'index.html'
     path = os.path.join(APP_LOCATION, path)
-    # print "PATH", path
 
     if not (os.path.isdir(path) or os.path.isfile(path)):
         path = os.path.join(APP_LOCATION, 'index.html')

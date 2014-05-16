@@ -2,18 +2,15 @@ import codecs
 import os
 import hashlib
 
-import lxml
 import requests
 from lxml import etree
-
-
 
 
 def get_html(url, use_cache=False):
     if use_cache:
         filename = './.downloadcache/%s.html' % hashlib.md5(url).hexdigest()
         if os.path.isfile(filename):
-            with codecs.open(filename, 'r', 'utf-8')  as f:
+            with codecs.open(filename, 'r', 'utf-8') as f:
                 print "READING FROM CACHE", filename
                 return f.read(), 'utf-8'
 
@@ -69,7 +66,7 @@ def _node_size(node):
 
 
 def sizeof_fmt(num):
-    for x in ['b','Kb','Mb','Gb','Tb']:
+    for x in ['b', 'Kb', 'Mb', 'Gb', 'Tb']:
         if num < 1024.0:
             if x == 'b':
                 return "%d%s" % (num, x)
