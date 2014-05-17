@@ -67,6 +67,16 @@ function makeTree(flare, container_selector, page_width, page_height) {
     // Normalize for fixed-depth.
     nodes.forEach(function(d) { d.y = d.depth * 180; });
 
+    var _sizeScale = d3.scale.sqrt()
+      .domain([0, d3.max(nodes, function(d) { return d.value; })])
+      .range([0, 35]);
+
+    // Put a minimum on the scale. Too bad this isn't built in.
+    function sizeScale(input) {
+      var output = _sizeScale(input);
+      return Math.max(output, 2.5);
+    }
+
     // Update the nodes…
     var node = svg.selectAll("g.node")
         .data(nodes, function(d) { return d.id || (d.id = ++i); });
@@ -94,7 +104,7 @@ function makeTree(flare, container_selector, page_width, page_height) {
         .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
 
     nodeUpdate.select("circle")
-        .attr("r", function(d) { return 30 * d.percentage; })
+        .attr("r", function(d) { return sizeScale(d.value); })
         .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 
     nodeUpdate.select("text")
