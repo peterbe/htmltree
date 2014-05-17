@@ -33,9 +33,17 @@ def get_html(url, use_cache=False):
 def url_to_tree(url, use_cache=False, max_depth=4):
     print (url, use_cache)
     html, encoding = get_html(url, use_cache=use_cache)
+
     parser = etree.HTMLParser(encoding=encoding)
+
     print "Parsing", len(html), "bytes"
-    doc = etree.fromstring(html, parser).getroottree()
+    try:
+        doc = etree.fromstring(html, parser).getroottree()
+    except ValueError:
+        # is it perhaps a duplicate encoding definition
+        # http://twigstechtips.blogspot.com/2013/06/python-lxml-strings-with-encoding.html
+        html = html.encode(encoding)
+        doc = etree.fromstring(html, parser).getroottree()
     page = doc.getroot()
     tree = {}
 
