@@ -20,6 +20,7 @@ angular.module('htmltree', [
         this.$.loading = false;
         this.$.page_width = 960;
         this.$.server_error = false;
+        this.$.stats = {};
         if (this.$location.search().url) {
             this.$.url = this.$location.search().url;
             this._drawTree(this.$location.search().url);
@@ -46,6 +47,7 @@ angular.module('htmltree', [
         this.$.drawn = false;
         this.$.server_error = false;
         this.$.page_width = 960;
+        this.$.stats = {};
         d3.select('#tree svg').remove();
     },
 
@@ -69,6 +71,11 @@ angular.module('htmltree', [
         )
         .success(function(response) {
             makeTree(response, '#tree', this.$.page_width);
+            this.$.stats = {
+                from_cache: response._from_cache,
+                size: response._size,
+                took: response._took
+            };
             // makeTreemap(response, '#treemap', window.innerWidth - 40);
             // makeTreemap(response, '#treemap');
         }.bind(this))

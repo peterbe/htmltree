@@ -30,3 +30,8 @@
     padding-top: 100px;
     padding-bottom: 50px;
 }
+
+p.small {
+    font-size: 80%;
+    text-align: right;
+}

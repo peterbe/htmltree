@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 import os
 import hashlib
+import time
 
 from werkzeug.contrib.cache import MemcachedCache
 
 from flask import Flask, request, make_response, jsonify, send_file
 from flask.views import MethodView
 
-from parser import url_to_tree
+from parser import url_to_tree, sizeof_fmt
 
 MEMCACHE_URL = os.environ.get('MEMCACHE_URL', '127.0.0.1:11211').split(',')
 DEBUG = os.environ.get('DEBUG', False) in ('true', '1', 'y', 'yes')
@@ -46,15 +47,16 @@ class URLToTreeView(MethodView):
         tree = cache.get(key)
         if tree is None:
 
-            cache.inc(self.queue_key, 1)
+            t0 = time.time()
             tree = url_to_tree(
                 url,
                 use_cache=DEBUG,
                 max_depth=max_depth
             )
-            cache.dec(self.queue_key, 1)
+            t1 = time.time()
             cache.set(key, tree, 60 * 60)
             tree['_from_cache'] = False
+            tree['_took'] = '%.3f' % (t1 - t0)
 
             recent = cache.get('recent') or []
             recent.insert(0, url)
@@ -63,6 +65,11 @@ class URLToTreeView(MethodView):
 
         else:
             tree['_from_cache'] = True
+        size = None
+        for k in tree:
+            if k == 'name':
+                size = tree[k].split()[-1]
+        tree['_size'] = size
         return make_response(jsonify(tree))
 
 

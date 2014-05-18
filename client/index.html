@@ -56,7 +56,11 @@ https://github.com/peterbe/htmltree/compare/$git_revision_short...HEAD
                 </div>
               </div>
             </div>
-
+            <p ng-show="drawn" class="small">
+                Downloaded <b>{{ stats.size }}</b>.
+                <span ng-if="stats.from_cache">From server cache.</span>
+                <span ng-if="stats.took">Took <b>{{ stats.took }} seconds</b>.</span>
+            </p>
         </form>
 
         <p ng-show="!url.length" style="margin-top:40px" ng-cloak>
