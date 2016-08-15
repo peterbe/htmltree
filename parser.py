@@ -105,10 +105,14 @@ def _get_children(page, maxdepth, whole_size):
 
 if __name__ == '__main__':
     import sys
-    from pprint import pprint
+    import json
+    # from pprint import pprint
     url = sys.argv[1]
     try:
         max_depth = int(sys.argv[2])
     except (ValueError, IndexError):
         max_depth = 4
-    pprint(url_to_tree(url, use_cache=True, max_depth=max_depth))
+    print json.dumps(
+        url_to_tree(url, use_cache=True, max_depth=max_depth),
+        indent=4, sort_keys=True
+    )
